@@ -19,14 +19,14 @@
 // MARK: - Asset Catalogs
 
 // swiftlint:disable identifier_name line_length nesting type_body_length type_name
-public enum LoadingViewDemoAsset: Sendable {
-  public static let accentColor = LoadingViewDemoColors(name: "AccentColor")
+public enum DemoIOSAsset: Sendable {
+  public static let accentColor = DemoIOSColors(name: "AccentColor")
 }
 // swiftlint:enable identifier_name line_length nesting type_body_length type_name
 
 // MARK: - Implementation Details
 
-public final class LoadingViewDemoColors: Sendable {
+public final class DemoIOSColors: Sendable {
   public let name: String
 
   #if os(macOS)
@@ -55,9 +55,9 @@ public final class LoadingViewDemoColors: Sendable {
   }
 }
 
-public extension LoadingViewDemoColors.Color {
+public extension DemoIOSColors.Color {
   @available(iOS 11.0, tvOS 11.0, watchOS 4.0, macOS 10.13, visionOS 1.0, *)
-  convenience init?(asset: LoadingViewDemoColors) {
+  convenience init?(asset: DemoIOSColors) {
     let bundle = Bundle.module
     #if os(iOS) || os(tvOS) || os(visionOS)
     self.init(named: asset.name, in: bundle, compatibleWith: nil)
@@ -72,7 +72,7 @@ public extension LoadingViewDemoColors.Color {
 #if canImport(SwiftUI)
 @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, visionOS 1.0, *)
 public extension SwiftUI.Color {
-  init(asset: LoadingViewDemoColors) {
+  init(asset: DemoIOSColors) {
     let bundle = Bundle.module
     self.init(asset.name, bundle: bundle)
   }

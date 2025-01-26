@@ -1,7 +1,7 @@
 import ProjectDescription
 
 nonisolated(unsafe) let project = Project(
-    name: "LoadingViewDemo",
+    name: "Demo",
     packages: [
         .package(path: "..")
     ],
@@ -12,7 +12,21 @@ nonisolated(unsafe) let project = Project(
     ]),
     targets: [
         .target(
-            name: "LoadingViewDemo",
+            name: "Demo-iOS",
+            destinations: .iOS,
+            product: .app,
+            bundleId: "dev.janodev.loadingview",
+            sources: ["Sources/SwiftUI/**"],
+            resources: ["Sources/Resources/**"],
+            scripts: [
+                swiftlintScript()
+            ],
+            dependencies: [
+                .package(product: "LoadingView"),
+            ]
+        ),
+        .target(
+            name: "Demo-MacOS",
             destinations: .macOS,
             product: .app,
             bundleId: "dev.janodev.loadingview",
@@ -26,7 +40,7 @@ nonisolated(unsafe) let project = Project(
             ]
         ),
         .target(
-            name: "LoadingViewDemoTests",
+            name: "Demo-MacOS-Tests",
             destinations: .macOS,
             product: .unitTests,
             bundleId: "dev.janodev.loadingview.tests",
@@ -37,7 +51,7 @@ nonisolated(unsafe) let project = Project(
                 swiftlintScript()
             ],
             dependencies: [
-                .target(name: "LoadingViewDemo")
+                .target(name: "Demo-MacOS")
             ]
         ),
     ],

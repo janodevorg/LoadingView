@@ -14,10 +14,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "80B4DFB45F7EF258589B012E"
-               BuildableName = "LoadingViewDemo.app"
-               BlueprintName = "LoadingViewDemo"
-               ReferencedContainer = "container:LoadingViewDemo.xcodeproj">
+               BlueprintIdentifier = "1DCC0C7116064E18095CB309"
+               BuildableName = "Demo_MacOS.app"
+               BlueprintName = "Demo-MacOS"
+               ReferencedContainer = "container:Demo.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -28,10 +28,24 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "887D9AD3C539402A3F0A0FBB"
-               BuildableName = "LoadingViewDemoTests.xctest"
-               BlueprintName = "LoadingViewDemoTests"
-               ReferencedContainer = "container:LoadingViewDemo.xcodeproj">
+               BlueprintIdentifier = "002BF6BCB539876A3D1F5D2E"
+               BuildableName = "Demo_MacOS_Tests.xctest"
+               BlueprintName = "Demo-MacOS-Tests"
+               ReferencedContainer = "container:Demo.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "D6C1679478EEC4FA35AB6ED7"
+               BuildableName = "Demo_iOS.app"
+               BlueprintName = "Demo-iOS"
+               ReferencedContainer = "container:Demo.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -46,10 +60,10 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "887D9AD3C539402A3F0A0FBB"
-               BuildableName = "LoadingViewDemoTests.xctest"
-               BlueprintName = "LoadingViewDemoTests"
-               ReferencedContainer = "container:LoadingViewDemo.xcodeproj">
+               BlueprintIdentifier = "002BF6BCB539876A3D1F5D2E"
+               BuildableName = "Demo_MacOS_Tests.xctest"
+               BlueprintName = "Demo-MacOS-Tests"
+               ReferencedContainer = "container:Demo.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -68,10 +82,10 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "80B4DFB45F7EF258589B012E"
-            BuildableName = "LoadingViewDemo.app"
-            BlueprintName = "LoadingViewDemo"
-            ReferencedContainer = "container:LoadingViewDemo.xcodeproj">
+            BlueprintIdentifier = "1DCC0C7116064E18095CB309"
+            BuildableName = "Demo_MacOS.app"
+            BlueprintName = "Demo-MacOS"
+            ReferencedContainer = "container:Demo.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -85,10 +99,10 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "80B4DFB45F7EF258589B012E"
-            BuildableName = "LoadingViewDemo.app"
-            BlueprintName = "LoadingViewDemo"
-            ReferencedContainer = "container:LoadingViewDemo.xcodeproj">
+            BlueprintIdentifier = "1DCC0C7116064E18095CB309"
+            BuildableName = "Demo_MacOS.app"
+            BlueprintName = "Demo-MacOS"
+            ReferencedContainer = "container:Demo.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

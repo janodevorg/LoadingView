@@ -9,11 +9,11 @@ import Foundation
 /// succession. That’s fine, we want to debounce user actions, not the view’s
 /// loading progress.
 @MainActor
-public class DebouncingLoadable<LoadableObject: Loadable>: Loadable, Sendable {
+public class DebouncingLoadable<LoadableObject: Loadable>: Loadable {
     public typealias Value = LoadableObject.Value
-    public var isCancelled = false
+    public private(set) var isCanceled = false
 
-    public var state: any AsyncSequence<LoadingState<LoadableObject.Value>, Never>
+    public private(set) var state: any AsyncSequence<LoadingState<LoadableObject.Value>, Never>
     private let continuation: AsyncStream<LoadingState<Value>>.Continuation
 
     private var loadable: LoadableObject
@@ -53,6 +53,14 @@ public class DebouncingLoadable<LoadableObject: Loadable>: Loadable, Sendable {
         stateTask?.cancel()
         debounceTask?.cancel()
         continuation.finish()
+    }
+
+    public func cancel() {
+        isCanceled = true
+    }
+
+    public func reset() {
+        isCanceled = false
     }
 
     /// Initiates the loading process, applying debouncing rules based on initialization parameters.

@@ -13,6 +13,7 @@ let package = Package(
             targets: ["LoadingView"])
     ],
     dependencies: [
+        .package(url: "git@github.com:SimplyDanny/SwiftLintPlugins.git", from: "0.58.2"),
         // .package(url: "git@github.com:apple/swift-async-algorithms.git", branch: "main")
     ],
     targets: [
@@ -21,7 +22,10 @@ let package = Package(
             dependencies: [
                 // .product(name: "AsyncAlgorithms", package: "swift-async-algorithms")
             ],
-            path: "Sources/Main"
+            path: "Sources/Main",
+            plugins: [
+                .plugin(name: "SwiftLintBuildToolPlugin", package: "SwiftLintPlugins")
+            ]
         ),
         .testTarget(
             name: "LoadingViewTests",

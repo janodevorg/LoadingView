@@ -3,18 +3,21 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 55;
+	objectVersion = 56;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		18A05F2761BB7995AD41F818 /* LoggerFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560C0066816E9FF6C4797CDD /* LoggerFactory.swift */; };
+		1F7022CE2698890DCC68EA6C /* RetryableLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD5F4371474AC5F78E961731 /* RetryableLoader.swift */; };
 		2F3804470AE6C47B91C5B3E7 /* RetryableLoaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51E8FD0A0250730B820BF6B7 /* RetryableLoaderTests.swift */; };
 		33BA92AB8C7B840D639E69CF /* DebouncingLoadableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813077A351E057DDF55EC7ED /* DebouncingLoadableTests.swift */; };
-		35E88EAADD25E5926C1B3EEB /* DebouncingLoadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C7D274B9C00DA763C34E40F /* DebouncingLoadable.swift */; };
-		AB97FDBDAAEB9AB583221857 /* RetryableLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D8C7F094A11507EAA6A6282 /* RetryableLoader.swift */; };
+		821C3C5D69093D75C5B27F76 /* DebouncingLoadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08F20F9865FCF60575E43DC /* DebouncingLoadable.swift */; };
+		9095BFAA255C51104DD88A4F /* BaseLoadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9772051181461F48124D2D3F /* BaseLoadable.swift */; };
 		CFB4C38190E7C6DE8C257FA9 /* LoadingState.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA3973170DDCC8CEC219142F /* LoadingState.swift */; };
 		D034ECE7632B47530E4B2647 /* Loadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3AEA5E10289359CDC1BE7DD /* Loadable.swift */; };
 		D1BF51689BDC0D1E06C122FD /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4FD23F2CCD27234261D2749 /* LoadingView.swift */; };
 		E5AEA006971A2B33FD617183 /* LoadingViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DFF6E3934490E7DE1C1849C /* LoadingViewTests.swift */; };
+		E945E389513940BF64B831A3 /* BlockLoadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8F5C23549BECD9A01C76B58 /* BlockLoadable.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -41,20 +44,23 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		0D8C7F094A11507EAA6A6282 /* RetryableLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RetryableLoader.swift; sourceTree = "<group>"; };
 		1D521F729C2E118BD57FA504 /* LoadingViewTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LoadingViewTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		26873C0A3ABED5A0C393586B /* LoadingView.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = LoadingView.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2DFF6E3934490E7DE1C1849C /* LoadingViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingViewTests.swift; sourceTree = "<group>"; };
-		3C7D274B9C00DA763C34E40F /* DebouncingLoadable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebouncingLoadable.swift; sourceTree = "<group>"; };
 		51E8FD0A0250730B820BF6B7 /* RetryableLoaderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RetryableLoaderTests.swift; sourceTree = "<group>"; };
+		560C0066816E9FF6C4797CDD /* LoggerFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggerFactory.swift; sourceTree = "<group>"; };
 		7E00B9EE56458BB3843CEBEB /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 		813077A351E057DDF55EC7ED /* DebouncingLoadableTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebouncingLoadableTests.swift; sourceTree = "<group>"; };
+		9772051181461F48124D2D3F /* BaseLoadable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseLoadable.swift; sourceTree = "<group>"; };
 		9A13634E213B933C1F811898 /* Project.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Project.swift; sourceTree = "<group>"; };
 		AA3973170DDCC8CEC219142F /* LoadingState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingState.swift; sourceTree = "<group>"; };
+		C08F20F9865FCF60575E43DC /* DebouncingLoadable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebouncingLoadable.swift; sourceTree = "<group>"; };
 		C4FD23F2CCD27234261D2749 /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
+		C8F5C23549BECD9A01C76B58 /* BlockLoadable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockLoadable.swift; sourceTree = "<group>"; };
 		D3AEA5E10289359CDC1BE7DD /* Loadable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Loadable.swift; sourceTree = "<group>"; };
 		D4E3BE809870EFCB2199EB3E /* LoadingView-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "LoadingView-Info.plist"; sourceTree = "<group>"; };
 		EECA580DFCB00976189BE9E3 /* LoadingViewTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "LoadingViewTests-Info.plist"; sourceTree = "<group>"; };
+		FD5F4371474AC5F78E961731 /* RetryableLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RetryableLoader.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,6 +81,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0A90D09B965E271C2BB10833 /* Extra */ = {
+			isa = PBXGroup;
+			children = (
+				9772051181461F48124D2D3F /* BaseLoadable.swift */,
+				C8F5C23549BECD9A01C76B58 /* BlockLoadable.swift */,
+				C08F20F9865FCF60575E43DC /* DebouncingLoadable.swift */,
+				560C0066816E9FF6C4797CDD /* LoggerFactory.swift */,
+				FD5F4371474AC5F78E961731 /* RetryableLoader.swift */,
+			);
+			path = Extra;
+			sourceTree = "<group>";
+		};
 		1D10494F6AB3989B0FEB8432 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
@@ -105,11 +123,10 @@
 		5208C80D13B8D461B2EC7FDA /* Main */ = {
 			isa = PBXGroup;
 			children = (
-				3C7D274B9C00DA763C34E40F /* DebouncingLoadable.swift */,
+				0A90D09B965E271C2BB10833 /* Extra */,
 				D3AEA5E10289359CDC1BE7DD /* Loadable.swift */,
 				AA3973170DDCC8CEC219142F /* LoadingState.swift */,
 				C4FD23F2CCD27234261D2749 /* LoadingView.swift */,
-				0D8C7F094A11507EAA6A6282 /* RetryableLoader.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -198,8 +215,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
-				TargetAttributes = {
-				};
+				LastUpgradeCheck = 1620;
 			};
 			buildConfigurationList = C0565135BABC18404F64F546 /* Build configuration list for PBXProject "LoadingView" */;
 			compatibilityVersion = "Xcode 14.0";
@@ -210,6 +226,9 @@
 				en,
 			);
 			mainGroup = AABA8684CFEEDAFA36F145B4;
+			packageReferences = (
+				35E4D19E3C24A13B1BECE7C5 /* XCRemoteSwiftPackageReference "SwiftLintPlugins" */,
+			);
 			productRefGroup = 805F42666F31AA3C96918E5B /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -274,11 +293,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				35E88EAADD25E5926C1B3EEB /* DebouncingLoadable.swift in Sources */,
+				9095BFAA255C51104DD88A4F /* BaseLoadable.swift in Sources */,
+				E945E389513940BF64B831A3 /* BlockLoadable.swift in Sources */,
+				821C3C5D69093D75C5B27F76 /* DebouncingLoadable.swift in Sources */,
+				18A05F2761BB7995AD41F818 /* LoggerFactory.swift in Sources */,
+				1F7022CE2698890DCC68EA6C /* RetryableLoader.swift in Sources */,
 				D034ECE7632B47530E4B2647 /* Loadable.swift in Sources */,
 				CFB4C38190E7C6DE8C257FA9 /* LoadingState.swift in Sources */,
 				D1BF51689BDC0D1E06C122FD /* LoadingView.swift in Sources */,
-				AB97FDBDAAEB9AB583221857 /* RetryableLoader.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -453,10 +475,7 @@
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = (
-					"$(inherited)",
-					DEBUG,
-				);
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DEBUG";
 				SWIFT_COMPILATION_MODE = singlefile;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = 1;
@@ -483,6 +502,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
 				);
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++14";
 				PRODUCT_BUNDLE_IDENTIFIER = dev.jano.loadingview;
 				PRODUCT_NAME = LoadingView;
 				SDKROOT = auto;
@@ -491,10 +511,7 @@
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = (
-					"$(inherited)",
-					DEBUG,
-				);
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DEBUG";
 				SWIFT_COMPILATION_MODE = singlefile;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = 1;
@@ -523,6 +540,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
 				);
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++14";
 				PRODUCT_BUNDLE_IDENTIFIER = dev.jano.loadingview;
 				PRODUCT_NAME = LoadingView;
 				SDKROOT = auto;
@@ -570,6 +588,17 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		35E4D19E3C24A13B1BECE7C5 /* XCRemoteSwiftPackageReference "SwiftLintPlugins" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "git@github.com:SimplyDanny/SwiftLintPlugins.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.58.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
 	};
 	rootObject = 2040C5D97FB75E38638AA34B /* Project object */;
 }

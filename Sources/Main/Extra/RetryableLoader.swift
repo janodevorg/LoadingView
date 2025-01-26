@@ -1,17 +1,17 @@
 import Foundation
 
-final class RetryableLoader<Base: Loadable & Sendable>: Loadable, Sendable {
-    var isCancelled = false
-    typealias Value = Base.Value
+public final class RetryableLoader<Base: Loadable & Sendable>: Loadable, Sendable {
+    public private(set) var isCanceled = false
+    public typealias Value = Base.Value
 
     private let base: Base
     private let maxAttempts: Int
     private let internalStream: AsyncStream<LoadingState<Value>>
     private var continuation: AsyncStream<LoadingState<Value>>.Continuation?
 
-    var state: any AsyncSequence<LoadingState<Value>, Never>
+    public private(set) var state: any AsyncSequence<LoadingState<Value>, Never>
 
-    init(base: Base, maxAttempts: Int) {
+    public init(base: Base, maxAttempts: Int) {
         self.base = base
         self.maxAttempts = maxAttempts
 
@@ -25,18 +25,26 @@ final class RetryableLoader<Base: Loadable & Sendable>: Loadable, Sendable {
 
         self.continuation?.onTermination = { @Sendable _ in
             Task { @MainActor [weak self] in
-                self?.isCancelled = true
+                self?.isCanceled = true
             }
         }
     }
 
-    func load() async {
+    public func cancel() {
+        isCanceled = true
+    }
+
+    public func reset() {
+        isCanceled = false
+    }
+
+    public func load() async {
         guard let continuation = continuation else { return }
 
         var attempt = 0
         repeat {
             do {
-                continuation.yield(.loading(Progress(
+                continuation.yield(.loading(LoadingProgress(
                     message: attempt > 0 ? "Retrying…" : nil
                 )))
 
@@ -59,7 +67,7 @@ final class RetryableLoader<Base: Loadable & Sendable>: Loadable, Sendable {
                 }
 
             } catch {
-                guard !isCancelled else { return }
+                guard !isCanceled else { return }
 
                 attempt += 1
                 if attempt >= maxAttempts {
@@ -72,7 +80,7 @@ final class RetryableLoader<Base: Loadable & Sendable>: Loadable, Sendable {
                     nanoseconds: UInt64(pow(2, Double(attempt))) * 1_000_000_000
                 )
             }
-        } while !isCancelled
+        } while !isCanceled
 
         // finish after cancelled
         continuation.finish()

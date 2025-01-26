@@ -4,7 +4,15 @@ import XCTest
 private final class MockLoadable: Loadable {
     var state: any AsyncSequence<LoadingState<Int>, Never>
     typealias Value = Int
-    var isCancelled = false
+    var isCanceled = false
+
+    func cancel() {
+        isCanceled = true
+    }
+
+    func reset() {
+        isCanceled = false
+    }
 
     private var continuation: AsyncStream<LoadingState<Int>>.Continuation
     let internalStream: AsyncStream<LoadingState<Int>>
@@ -12,7 +20,7 @@ private final class MockLoadable: Loadable {
     var loadCallCount = 0
 
     init() {
-        var localContinuation: AsyncStream<LoadingState<Int>>.Continuation!
+        var localContinuation: AsyncStream<LoadingState<Int>>.Continuation! // swiftlint:disable:this implicitly_unwrapped_optional
         let internalStream = AsyncStream<LoadingState<Int>> { continuation in
             localContinuation = continuation
         }
@@ -30,7 +38,7 @@ private final class MockLoadable: Loadable {
 }
 
 final class DebouncingLoadableTests: XCTestCase {
-    private var mockLoadable: MockLoadable!
+    private var mockLoadable: MockLoadable! // swiftlint:disable:this implicitly_unwrapped_optional
 
     override func setUp() async throws {
         try await super.setUp()

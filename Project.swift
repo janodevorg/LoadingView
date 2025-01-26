@@ -3,6 +3,7 @@ import ProjectDescription
 let project = Project(
     name: "LoadingView",
     packages: [
+        .package(url: "git@github.com:SimplyDanny/SwiftLintPlugins.git", from: "0.58.2")
     ],
     settings: .settings(base: [
         "SWIFT_VERSION": "6.0",
@@ -19,8 +20,6 @@ let project = Project(
             sources: ["Sources/Main/**"],
             scripts: [
                 swiftlintScript()
-            ],
-            dependencies: [
             ]
         ),
         .target(

@@ -13,9 +13,16 @@ enum MockError: Error, Equatable {
 final class MockLoadableFailOnce: Loadable, Sendable {
     typealias Value = Int
 
-    var isCancelled = false
+    var isCanceled = false
     private let internalStream: AsyncStream<LoadingState<Int>>
     private var continuation: AsyncStream<LoadingState<Int>>.Continuation?
+
+    func cancel() {
+        isCanceled = true
+    }
+    func reset() {
+        isCanceled = false
+    }
 
     /// Exposes the read-only side of the stream for `Loadable`.
     var state: any AsyncSequence<LoadingState<Int>, Never>
@@ -23,7 +30,7 @@ final class MockLoadableFailOnce: Loadable, Sendable {
     private var loadCallCount = 0
 
     init() {
-        var localContinuation: AsyncStream<LoadingState<Int>>.Continuation!
+        var localContinuation: AsyncStream<LoadingState<Int>>.Continuation! // swiftlint:disable:this implicitly_unwrapped_optional
         let stream = AsyncStream<LoadingState<Int>> { continuation in
             localContinuation = continuation
         }
@@ -31,16 +38,16 @@ final class MockLoadableFailOnce: Loadable, Sendable {
         self.internalStream = stream
         self.state = stream
 
-        // When the consumer cancels the stream, mark isCancelled
+        // When the consumer cancels the stream, mark isCanceled
         self.continuation?.onTermination = { @Sendable _ in
             Task { @MainActor [weak self] in
-                self?.isCancelled = true
+                self?.isCanceled = true
             }
         }
     }
 
     func load() async {
-        guard let continuation = continuation, !isCancelled else { return }
+        guard let continuation, !isCanceled else { return }
 
         loadCallCount += 1
         continuation.yield(.loading(nil))  // Just a .loading state
@@ -61,14 +68,21 @@ final class MockLoadableFailOnce: Loadable, Sendable {
 final class MockLoadableAlwaysFail: Loadable, Sendable {
     typealias Value = Int
 
-    var isCancelled = false
+    var isCanceled = false
     private let internalStream: AsyncStream<LoadingState<Int>>
     private var continuation: AsyncStream<LoadingState<Int>>.Continuation?
-
     var state: any AsyncSequence<LoadingState<Int>, Never>
 
+    func cancel() {
+        isCanceled = true
+    }
+
+    func reset() {
+        isCanceled = false
+    }
+
     init() {
-        var localContinuation: AsyncStream<LoadingState<Int>>.Continuation!
+        var localContinuation: AsyncStream<LoadingState<Int>>.Continuation! // swiftlint:disable:this implicitly_unwrapped_optional
         let stream = AsyncStream<LoadingState<Int>> { continuation in
             localContinuation = continuation
         }
@@ -78,18 +92,17 @@ final class MockLoadableAlwaysFail: Loadable, Sendable {
 
         self.continuation?.onTermination = { @Sendable _ in
             Task { @MainActor [weak self] in
-                self?.isCancelled = true
+                self?.isCanceled = true
             }
         }
     }
 
     func load() async {
-        guard let continuation = continuation, !isCancelled else { return }
+        guard let continuation, !isCanceled else { return }
         continuation.yield(.loading(nil))
         continuation.yield(.failure(MockError.somethingWentWrong))
     }
 }
-
 
 // MARK: - Test suite for RetryableLoader
 

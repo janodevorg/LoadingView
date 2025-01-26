@@ -7,13 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		166E304293643A4FA2C9BF3D /* UserLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0378E5CC4FEE778FD0883115 /* UserLoader.swift */; };
+		00DDC7A52F55671CCD7F1B6B /* Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5630453F12C367BEB52892BC /* Repository.swift */; };
+		0C22CFB7843C47A8CCC85A1C /* LoggerFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62B1022B6E81CA6B6AD1AA2D /* LoggerFactory.swift */; };
 		1A6EC3668152CE4DFF9A1771 /* TuistBundle+LoadingViewDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF843C75CF3F0EDAD607513A /* TuistBundle+LoadingViewDemo.swift */; };
 		23BD1385CBA64598C40E74C5 /* TuistAssets+LoadingViewDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A35FB75E969E671108A5F7A /* TuistAssets+LoadingViewDemo.swift */; };
+		4AD5DFDBF9AB2F4883E3665C /* Tab1List.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BD8471B35A613C377AAD52C /* Tab1List.swift */; };
 		557FBAB308A360F87A8EC03E /* ExampleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF86D346D57290748BC6CD74 /* ExampleTests.swift */; };
-		697EB61B8FCAC1D1A633543E /* ExampleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 426440C3474BB4B512B8B74A /* ExampleApp.swift */; };
+		5EE48C73C12FF5D493A74D3E /* Tab2Add.swift in Sources */ = {isa = PBXBuildFile; fileRef = D21F58B441687D21EB2FAB28 /* Tab2Add.swift */; };
+		70C96B304B8298D83620FB97 /* RepositoryLoadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18E5F842CFEFC1D1CC3453D1 /* RepositoryLoadable.swift */; };
 		A495FFC131CB7CBF4154A5DB /* LoadingView in Frameworks */ = {isa = PBXBuildFile; productRef = FF3D830952386E9C54831C38 /* LoadingView */; };
+		BDAF918763E99B39E4275790 /* DemoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61894821E56AE63DD4710107 /* DemoApp.swift */; };
 		C13B533A6B8CAB92BA1FACF1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7A1D433078FB0B391AC7BF21 /* Assets.xcassets */; };
+		CD1EA1DF5AA6A5D63B1B7DF1 /* TabsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 241FA8A01F1F4FC90E095C77 /* TabsView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,16 +55,21 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		0378E5CC4FEE778FD0883115 /* UserLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserLoader.swift; sourceTree = "<group>"; };
 		0A35FB75E969E671108A5F7A /* TuistAssets+LoadingViewDemo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TuistAssets+LoadingViewDemo.swift"; sourceTree = "<group>"; };
+		18E5F842CFEFC1D1CC3453D1 /* RepositoryLoadable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositoryLoadable.swift; sourceTree = "<group>"; };
+		241FA8A01F1F4FC90E095C77 /* TabsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabsView.swift; sourceTree = "<group>"; };
 		2856400EDE717935C10B8CFD /* LoadingView */ = {isa = PBXFileReference; lastKnownFileType = folder; name = LoadingView; path = ..; sourceTree = "<group>"; };
-		426440C3474BB4B512B8B74A /* ExampleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleApp.swift; sourceTree = "<group>"; };
+		5630453F12C367BEB52892BC /* Repository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repository.swift; sourceTree = "<group>"; };
+		61894821E56AE63DD4710107 /* DemoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoApp.swift; sourceTree = "<group>"; };
+		62B1022B6E81CA6B6AD1AA2D /* LoggerFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggerFactory.swift; sourceTree = "<group>"; };
 		6BFAC78ED637177AC0C601A7 /* Project.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Project.swift; sourceTree = "<group>"; };
 		6E531C61C7FA1CE8ACB7CEBF /* LoadingViewDemo-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "LoadingViewDemo-Info.plist"; sourceTree = "<group>"; };
 		7A1D433078FB0B391AC7BF21 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		7BD8471B35A613C377AAD52C /* Tab1List.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tab1List.swift; sourceTree = "<group>"; };
 		AF86D346D57290748BC6CD74 /* ExampleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleTests.swift; sourceTree = "<group>"; };
 		C4F17290F48DF1CFF14DD76A /* LoadingViewDemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LoadingViewDemoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB31D35684988CCB6A164C28 /* LoadingViewDemoTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "LoadingViewDemoTests-Info.plist"; sourceTree = "<group>"; };
+		D21F58B441687D21EB2FAB28 /* Tab2Add.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tab2Add.swift; sourceTree = "<group>"; };
 		EE23D864E9A41DA673716FE7 /* LoadingViewDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LoadingViewDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EF843C75CF3F0EDAD607513A /* TuistBundle+LoadingViewDemo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TuistBundle+LoadingViewDemo.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -149,8 +159,13 @@
 		96D01BBCD6904E3A8B75C121 /* SwiftUI */ = {
 			isa = PBXGroup;
 			children = (
-				426440C3474BB4B512B8B74A /* ExampleApp.swift */,
-				0378E5CC4FEE778FD0883115 /* UserLoader.swift */,
+				61894821E56AE63DD4710107 /* DemoApp.swift */,
+				62B1022B6E81CA6B6AD1AA2D /* LoggerFactory.swift */,
+				5630453F12C367BEB52892BC /* Repository.swift */,
+				18E5F842CFEFC1D1CC3453D1 /* RepositoryLoadable.swift */,
+				7BD8471B35A613C377AAD52C /* Tab1List.swift */,
+				D21F58B441687D21EB2FAB28 /* Tab2Add.swift */,
+				241FA8A01F1F4FC90E095C77 /* TabsView.swift */,
 			);
 			path = SwiftUI;
 			sourceTree = "<group>";
@@ -332,8 +347,13 @@
 			files = (
 				23BD1385CBA64598C40E74C5 /* TuistAssets+LoadingViewDemo.swift in Sources */,
 				1A6EC3668152CE4DFF9A1771 /* TuistBundle+LoadingViewDemo.swift in Sources */,
-				697EB61B8FCAC1D1A633543E /* ExampleApp.swift in Sources */,
-				166E304293643A4FA2C9BF3D /* UserLoader.swift in Sources */,
+				BDAF918763E99B39E4275790 /* DemoApp.swift in Sources */,
+				0C22CFB7843C47A8CCC85A1C /* LoggerFactory.swift in Sources */,
+				00DDC7A52F55671CCD7F1B6B /* Repository.swift in Sources */,
+				70C96B304B8298D83620FB97 /* RepositoryLoadable.swift in Sources */,
+				4AD5DFDBF9AB2F4883E3665C /* Tab1List.swift in Sources */,
+				5EE48C73C12FF5D493A74D3E /* Tab2Add.swift in Sources */,
+				CD1EA1DF5AA6A5D63B1B7DF1 /* TabsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

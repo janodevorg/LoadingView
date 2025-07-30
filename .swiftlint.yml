@@ -1,0 +1,6 @@
+child_config: mk/.swiftlint-refinement.yml
+
+included:
+  - Sources
+
+# excluded:

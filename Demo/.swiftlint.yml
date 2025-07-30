@@ -1,0 +1,8 @@
+child_config: ../../.swiftlint-refinement.yml
+
+included:
+  - Sources
+  - Tests
+  - UITests
+
+# excluded:

@@ -1,0 +1,39 @@
+{
+  "configurations" : [
+    {
+      "id" : "58D81F7C-4B42-44E1-A8C5-8B2F8A0B9D3F",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "maximumTestExecutionTimeAllowance" : 60,
+    "testTimeoutsEnabled" : true
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:Demo.xcodeproj",
+        "identifier" : "002BF6BCB539876A3D1F5D2E",
+        "name" : "Demo-MacOS-Tests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:Demo.xcodeproj",
+        "identifier" : "4ADE174B9F0244E6D1D52DD7",
+        "name" : "Demo-MacOS-UITests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:Demo.xcodeproj",
+        "identifier" : "78A6F41693114CE3E6F82A2F",
+        "name" : "Demo-iOS-UITests"
+      }
+    }
+  ],
+  "version" : 1
+}

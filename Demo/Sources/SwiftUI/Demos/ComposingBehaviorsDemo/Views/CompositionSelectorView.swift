@@ -7,24 +7,39 @@ struct CompositionSelectorView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("Select Composition Pattern")
-                .font(.headline)
+            HStack {
+                Text("Pattern:")
+                    .font(.headline)
 
-            Picker("Composition", selection: $selectedComposition) {
-                ForEach(CompositionType.allCases, id: \.self) { type in
-                    Text(type.rawValue).tag(type)
+                Spacer()
+
+                Menu {
+                    ForEach(CompositionType.allCases, id: \.self) { type in
+                        Button(action: {
+                            selectedComposition = type
+                            onSelectionChange(type)
+                        }, label: {
+                            Label(type.rawValue, systemImage: type.icon)
+                        })
+                    }
+                } label: {
+                    HStack {
+                        Image(systemName: selectedComposition.icon)
+                        Text(selectedComposition.rawValue)
+                        Image(systemName: "chevron.down")
+                            .font(.caption)
+                    }
+                    .foregroundColor(.primary)
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 8)
+                    .background(Color.gray.opacity(0.2))
+                    .cornerRadius(8)
                 }
-            }
-            .pickerStyle(.segmented)
-            .onChange(of: selectedComposition) { _, newValue in
-                onSelectionChange(newValue)
             }
 
             Text(selectedComposition.description)
                 .font(.caption)
                 .foregroundColor(.secondary)
-
-            CompositionDiagramView(compositionType: selectedComposition)
         }
         .padding()
         .background(Color.gray.opacity(0.1))

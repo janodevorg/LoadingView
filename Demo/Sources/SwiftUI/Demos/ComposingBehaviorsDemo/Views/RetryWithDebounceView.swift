@@ -38,7 +38,7 @@ struct RetryWithDebounceView: View {
             debounceInterval: 0.5
         )
         loader = RetryableLoader(
-            base: debounced,
+            wrapping: debounced,
             maxAttempts: 3
         )
     }

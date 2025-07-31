@@ -6,8 +6,8 @@ nonisolated(unsafe) let project = Project(
         .package(path: "..")
     ],
     settings: .settings(base: [
-        "SWIFT_VERSION": "6.0",
-        "IPHONEOS_DEPLOYMENT_TARGET": "18.0",
+        "SWIFT_VERSION": "6.2",
+        "IPHONEOS_DEPLOYMENT_TARGET": "26.0",
         "MACOSX_DEPLOYMENT_TARGET": "15.0"
     ]),
     targets: [
@@ -39,43 +39,46 @@ nonisolated(unsafe) let project = Project(
                 ]
             )
         ),
-        .target(
-            name: "Demo-MacOS",
-            destinations: .macOS,
-            product: .app,
-            bundleId: "dev.jano.apple.loadingview.demo",
-            sources: ["Sources/SwiftUI/**"],
-            resources: ["Sources/Resources/**"],
-            scripts: [
-                swiftlintScript()
-            ],
-            dependencies: [
-                .package(product: "LoadingView"),
-            ],
-            settings: .settings(
-                base: [
-                    "CODE_SIGN_STYLE": "Automatic",
-                    "CODE_SIGN_IDENTITY": "Apple Development",
-                    "DEVELOPMENT_TEAM": "23KN7M4FPW",
-                    "PROVISIONING_PROFILE_SPECIFIER": ""
-                ]
-            )
-        ),
-        .target(
-            name: "Demo-MacOS-Tests",
-            destinations: .macOS,
-            product: .unitTests,
-            bundleId: "dev.jano.apple.loadingview.demo.tests",
-            infoPlist: .default,
-            sources: ["Tests/**"],
-            resources: [],
-            scripts: [
-                swiftlintScript()
-            ],
-            dependencies: [
-                .target(name: "Demo-MacOS")
-            ]
-        ),
+
+        // UNCOMMENT IN macOS 26
+
+        // .target(
+        //     name: "Demo-MacOS",
+        //     destinations: .macOS,
+        //     product: .app,
+        //     bundleId: "dev.jano.apple.loadingview.demo",
+        //     sources: ["Sources/SwiftUI/**"],
+        //     resources: ["Sources/Resources/**"],
+        //     scripts: [
+        //         swiftlintScript()
+        //     ],
+        //     dependencies: [
+        //         .package(product: "LoadingView"),
+        //     ],
+        //     settings: .settings(
+        //         base: [
+        //             "CODE_SIGN_STYLE": "Automatic",
+        //             "CODE_SIGN_IDENTITY": "Apple Development",
+        //             "DEVELOPMENT_TEAM": "23KN7M4FPW",
+        //             "PROVISIONING_PROFILE_SPECIFIER": ""
+        //         ]
+        //     )
+        // ),
+        // .target(
+        //     name: "Demo-MacOS-Tests",
+        //     destinations: .macOS,
+        //     product: .unitTests,
+        //     bundleId: "dev.jano.apple.loadingview.demo.tests",
+        //     infoPlist: .default,
+        //     sources: ["Tests/**"],
+        //     resources: [],
+        //     scripts: [
+        //         swiftlintScript()
+        //     ],
+        //     dependencies: [
+        //         .target(name: "Demo-MacOS")
+        //     ]
+        // ),
         .target(
             name: "Demo-iOS-UITests",
             destinations: .iOS,
@@ -94,24 +97,24 @@ nonisolated(unsafe) let project = Project(
                 ]
             )
         ),
-        .target(
-            name: "Demo-MacOS-UITests",
-            destinations: .macOS,
-            product: .uiTests,
-            bundleId: "dev.jano.apple.loadingview.demo.uitests",
-            sources: ["UITests/**"],
-            dependencies: [
-                .target(name: "Demo-MacOS")
-            ],
-            settings: .settings(
-                base: [
-                    "CODE_SIGN_STYLE": "Automatic",
-                    "CODE_SIGN_IDENTITY": "Apple Development",
-                    "DEVELOPMENT_TEAM": "23KN7M4FPW",
-                    "PROVISIONING_PROFILE_SPECIFIER": ""
-                ]
-            )
-        ),
+        // .target(
+        //     name: "Demo-MacOS-UITests",
+        //     destinations: .macOS,
+        //     product: .uiTests,
+        //     bundleId: "dev.jano.apple.loadingview.demo.uitests",
+        //     sources: ["UITests/**"],
+        //     dependencies: [
+        //         .target(name: "Demo-MacOS")
+        //     ],
+        //     settings: .settings(
+        //         base: [
+        //             "CODE_SIGN_STYLE": "Automatic",
+        //             "CODE_SIGN_IDENTITY": "Apple Development",
+        //             "DEVELOPMENT_TEAM": "23KN7M4FPW",
+        //             "PROVISIONING_PROFILE_SPECIFIER": ""
+        //         ]
+        //     )
+        // ),
     ],
     schemes: [
         Scheme.scheme(
@@ -130,22 +133,22 @@ nonisolated(unsafe) let project = Project(
                 executable: TargetReference.target("Demo-iOS")
             )
         ),
-        Scheme.scheme(
-            name: "Demo-MacOS",
-            shared: true,
-            buildAction: BuildAction.buildAction(
-                targets: [TargetReference.target("Demo-MacOS")]
-            ),
-            testAction: .testPlans(
-                [Path.path("Demo-MacOS.xctestplan")],
-                configuration: .debug,
-                attachDebugger: true
-            ),
-            runAction: RunAction.runAction(
-                configuration: .debug,
-                executable: TargetReference.target("Demo-MacOS")
-            )
-        )
+        // Scheme.scheme(
+        //     name: "Demo-MacOS",
+        //     shared: true,
+        //     buildAction: BuildAction.buildAction(
+        //         targets: [TargetReference.target("Demo-MacOS")]
+        //     ),
+        //     testAction: .testPlans(
+        //         [Path.path("Demo-MacOS.xctestplan")],
+        //         configuration: .debug,
+        //         attachDebugger: true
+        //     ),
+        //     runAction: RunAction.runAction(
+        //         configuration: .debug,
+        //         executable: TargetReference.target("Demo-MacOS")
+        //     )
+        // )
     ],
     additionalFiles: [
         "Project.swift",

@@ -1,6 +1,8 @@
 import Foundation
+import Observation
 
 /// A loadable wrapper that adds automatic retry functionality with configurable attempts.
+@Observable
 @MainActor
 public final class RetryableLoader<Base: Loadable & Sendable>: Loadable {
     public private(set) var isCanceled = false
@@ -8,16 +10,14 @@ public final class RetryableLoader<Base: Loadable & Sendable>: Loadable {
 
     private let loadable: Base
     private let maxAttempts: Int
-    private let stateRelay = StateRelay<LoadingState<Value>>(.idle)
+    public var currentState: LoadingState<Value> = .idle
     private var monitorTask: Task<Void, Never>?
     private var hasStartedMonitoring = false
 
     public var state: any AsyncSequence<LoadingState<Value>, Never> {
-        stateRelay.stream
-    }
-
-    public var currentState: LoadingState<Value> {
-        stateRelay.currentValue
+        Observations {
+            self.currentState
+        }
     }
 
     public init(wrapping: Base, maxAttempts: Int) {
@@ -25,7 +25,7 @@ public final class RetryableLoader<Base: Loadable & Sendable>: Loadable {
         self.maxAttempts = maxAttempts
     }
 
-    deinit {
+    isolated deinit {
         monitorTask?.cancel()
     }
 
@@ -43,16 +43,16 @@ public final class RetryableLoader<Base: Loadable & Sendable>: Loadable {
                 guard !Task.isCancelled else { break }
 
                 // Forward all states
-                stateRelay.update(state)
+                currentState = state
 
                 switch state {
                 case .failure where attemptCount < maxAttempts:
                     attemptCount += 1
 
                     // Show retry message
-                    stateRelay.update(.loading(LoadingProgress(
+                    currentState = .loading(LoadingProgress(
                         message: "Retrying… (attempt \(attemptCount) of \(maxAttempts))"
-                    )))
+                    ))
 
                     // Wait with exponential backoff
                     try? await Task.sleep(
@@ -91,7 +91,7 @@ public final class RetryableLoader<Base: Loadable & Sendable>: Loadable {
     public func reset() {
         isCanceled = false
         loadable.reset()
-        stateRelay.update(.idle)
+        currentState = .idle
 
         // Cancel existing monitoring task and reset monitoring state
         // This ensures a fresh attemptCount when load() is called again

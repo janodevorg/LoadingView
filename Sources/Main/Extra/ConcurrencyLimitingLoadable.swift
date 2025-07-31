@@ -1,4 +1,5 @@
 import Foundation
+import Observation
 
 /// A loadable wrapper that limits the number of concurrent load operations using a token bucket pattern.
 ///
@@ -19,13 +20,14 @@ import Foundation
 ///     }
 /// }
 /// ```
+@Observable
 @MainActor
 public final class ConcurrencyLimitingLoadable<Base: Loadable & Sendable>: Loadable {
     public typealias Value = Base.Value
 
     private let base: Base
     private let tokenBucket: TokenBucket
-    private let stateRelay = StateRelay<LoadingState<Value>>(.idle)
+    public var currentState: LoadingState<Value> = .idle
     private var monitorTask: Task<Void, Never>?
     private var loadTask: Task<Void, Never>?
     private var hasStartedMonitoring = false
@@ -33,11 +35,9 @@ public final class ConcurrencyLimitingLoadable<Base: Loadable & Sendable>: Loada
     public private(set) var isCanceled = false
 
     public var state: any AsyncSequence<LoadingState<Value>, Never> {
-        stateRelay.stream
-    }
-
-    public var currentState: LoadingState<Value> {
-        stateRelay.currentValue
+        Observations {
+            self.currentState
+        }
     }
 
     /// Initializes a new concurrency-limited loadable.
@@ -50,7 +50,7 @@ public final class ConcurrencyLimitingLoadable<Base: Loadable & Sendable>: Loada
         self.tokenBucket = TokenBucket(tokens: concurrencyLimit)
     }
 
-    deinit {
+    isolated deinit {
         monitorTask?.cancel()
         loadTask?.cancel()
     }
@@ -64,7 +64,7 @@ public final class ConcurrencyLimitingLoadable<Base: Loadable & Sendable>: Loada
 
             for await state in base.state {
                 guard !Task.isCancelled else { break }
-                stateRelay.update(state)
+                currentState = state
             }
         }
     }
@@ -85,7 +85,7 @@ public final class ConcurrencyLimitingLoadable<Base: Loadable & Sendable>: Loada
             } catch {
                 // Token bucket operations were cancelled
                 if !self.isCanceled {
-                    self.stateRelay.update(.failure(ConcurrencyLimitError.tokenAcquisitionFailed))
+                    self.currentState = .failure(ConcurrencyLimitError.tokenAcquisitionFailed)
                 }
             }
         }
@@ -103,7 +103,7 @@ public final class ConcurrencyLimitingLoadable<Base: Loadable & Sendable>: Loada
     public func reset() {
         isCanceled = false
         base.reset()
-        stateRelay.update(.idle)
+        currentState = .idle
 
         // Cancel existing tasks and reset monitoring state
         loadTask?.cancel()

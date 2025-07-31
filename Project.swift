@@ -7,8 +7,8 @@ let project = Project(
     ],
     settings: .settings(base: [
         "SWIFT_VERSION": "6.0",
-        "IPHONEOS_DEPLOYMENT_TARGET": "18.0",
-        "MACOSX_DEPLOYMENT_TARGET": "15.0",
+        "IPHONEOS_DEPLOYMENT_TARGET": "26.0",
+        "MACOSX_DEPLOYMENT_TARGET": "26.0",
         "ENABLE_MODULE_VERIFIER": "YES"
     ]),
     targets: [

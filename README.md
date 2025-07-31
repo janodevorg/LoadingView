@@ -57,11 +57,11 @@ LoadingView(loader: loader, loadOnAppear: false) { value in
 }
 ```
 
-This library uses Swift 6 and a [StateRelay](https://github.com/janodev/LoadingView/blob/main/Sources/Main/StateRelay.swift) implementation to support multiple concurrent observers and replay of last value emitted.
+This library uses Swift 6. The v26 branch demonstrates usage of the native Observations framework available in iOS 26+.
 
 ## Supported Versions
 
-iOS 18, macOS 15, Xcode 16
+iOS 26+, macOS 26+, Xcode 16
 
 ## Installation
 

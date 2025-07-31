@@ -24,7 +24,7 @@ struct RetryDemo: View {
                     if retryableLoader == nil || maxAttempts != lastAppliedMaxAttempts || successAfter != lastAppliedSuccessAfter {
                         print("🟢 Creating new loaders")
                         baseLoader = FlakeyLoader(successAfterAttempts: successAfter)
-                        retryableLoader = RetryableLoader(base: baseLoader!, maxAttempts: maxAttempts)
+                        retryableLoader = RetryableLoader(wrapping: baseLoader!, maxAttempts: maxAttempts)
                         lastAppliedMaxAttempts = maxAttempts
                         lastAppliedSuccessAfter = successAfter
                     } else {

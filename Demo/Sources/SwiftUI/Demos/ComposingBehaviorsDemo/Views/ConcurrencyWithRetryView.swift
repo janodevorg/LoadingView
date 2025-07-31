@@ -21,7 +21,7 @@ struct ConcurrencyWithRetryView: View {
         // Base -> Retry -> Concurrency Limiting
         let base = SimulatedAPILoader()
         let retryable = RetryableLoader(
-            base: base,
+            wrapping: base,
             maxAttempts: 3
         )
         loader = ConcurrencyLimitingLoadable(

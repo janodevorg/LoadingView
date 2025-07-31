@@ -38,7 +38,7 @@ struct FullStackView: View {
             debounceInterval: 0.3
         )
         let retryable = RetryableLoader(
-            base: debounced,
+            wrapping: debounced,
             maxAttempts: 2
         )
         loader = ConcurrencyLimitingLoadable(

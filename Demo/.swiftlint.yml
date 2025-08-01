@@ -1,4 +1,4 @@
-child_config: ../../.swiftlint-refinement.yml
+child_config: ../mk/.swiftlint-refinement.yml
 
 included:
   - Sources

@@ -28,9 +28,9 @@ var body: some View {
 Use default loading and error views or pass your own. Data is loaded from a type conforming to the Loadable protocol. A few convenient implementations are provided:
 
 - [BlockLoadable](https://github.com/janodevorg/LoadingView/blob/main/Sources/Main/Extra/BlockLoadable.swift): loads data from the closure provided.
-- [ConcurrencyLimitingLoadable](https://github.com/janodev/LoadingView/blob/main/Sources/Main/Extra/ConcurrencyLimitingLoadable.swift): executes async calls limiting the number of concurrent operations.
-- [DebouncingLoadable](https://github.com/janodev/LoadingView/blob/main/Sources/Main/Extra/DebouncingLoadable.swift): delays execution until an elapsed time since the last event.
-- [RetryableLoader](https://github.com/janodev/LoadingView/blob/main/Sources/Main/Extra/RetryableLoader.swift): retry logic and exponential backoff.
+- [ConcurrencyLimitingLoadable](https://github.com/janodevorg/LoadingView/blob/main/Sources/Main/Extra/ConcurrencyLimitingLoadable.swift): executes async calls limiting the number of concurrent operations.
+- [DebouncingLoadable](https://github.com/janodevorg/LoadingView/blob/main/Sources/Main/Extra/DebouncingLoadable.swift): delays execution until an elapsed time since the last event.
+- [RetryableLoader](https://github.com/janodevorg/LoadingView/blob/main/Sources/Main/Extra/RetryableLoader.swift): retry logic and exponential backoff.
 
 Loaders are composable - you can nest them at will to combine behaviors like retry, debounce, and concurrency limiting. Example:
 ```swift
@@ -70,12 +70,12 @@ iOS 26+, macOS 26+, Xcode 16
 Using Xcode Swift Package Manager:
 
 1. In Xcode, select **File > Add Packages...**
-2. Enter URL: `https://github.com/janodev/LoadingView.git`
+2. Enter URL: `https://github.com/janodevorg/LoadingView.git`
 3. Select the `LoadingView` library and add it to your target.
 
 ### Using SPM
 ```swift
-.package(url: "git@github.com:janodev/LoadingView.git", from: "1.0.0"),
+.package(url: "git@github.com:janodevorg/LoadingView.git", from: "1.0.0"),
 
 .product(name: "LoadingView", package: "LoadingView"),
 ```
@@ -85,7 +85,7 @@ Using Xcode Swift Package Manager:
 To develop locally clone the repository and initialize submodules:
 
 ```bash
-git clone https://github.com/janodev/LoadingView.git
+git clone https://github.com/janodevorg/LoadingView.git
 cd LoadingView
 git submodule init
 git submodule update
@@ -93,16 +93,18 @@ git submodule update
 
 ## Examples
 
-- [BasicLoadingDemo](https://github.com/janodev/LoadingView/blob/main/Demo/Sources/SwiftUI/Demos/BasicLoadingDemo/BasicLoadingDemo.swift): default behavior.
-- [CancellationDemo](https://github.com/janodev/LoadingView/blob/main/Demo/Sources/SwiftUI/Demos/CancellationDemo/CancellationDemo.swift): cancelling a loading task.
-- [ConcurrencyLimitingDemo](https://github.com/janodev/LoadingView/blob/main/Demo/Sources/SwiftUI/Demos/ConcurrencyLimitingDemo/ConcurrencyLimitingDemo.swift): executing n operations with a concurrency limit.
-- [CustomViewsDemo](https://github.com/janodev/LoadingView/blob/main/Demo/Sources/SwiftUI/Demos/CustomViewsDemo/CustomViewsDemo.swift): providing custom views for empty, loading, success, and failure state.
-- [DebouncedDemo](https://github.com/janodev/LoadingView/blob/main/Demo/Sources/SwiftUI/Demos/DebouncedDemo/DebouncedDemo.swift): executing an operation when a certain time elapses since a given event.
-- [ErrorScenariosDemo](https://github.com/janodev/LoadingView/blob/main/Demo/Sources/SwiftUI/Demos/ErrorScenariosDemo/ErrorScenariosDemo.swift): different error types and custom error handling views with retry capabilities.
-- [ManualLoadingDemo](https://github.com/janodev/LoadingView/blob/main/Demo/Sources/SwiftUI/Demos/ManualLoadingDemo/ManualLoadingDemo.swift): compares automatic loading on appear versus manual loading triggered by user action.
-- [MultipleLoadersDemo](https://github.com/janodev/LoadingView/blob/main/Demo/Sources/SwiftUI/Demos/MultipleLoadersDemo/MultipleLoadersDemo.swift): demonstrates managing multiple independent loaders within a single view.
-- [ProgressTrackingDemo](https://github.com/janodev/LoadingView/blob/main/Demo/Sources/SwiftUI/Demos/ProgressTrackingDemo/ProgressTrackingDemo.swift): shows real-time progress updates during long-running operations.
-- [RetryDemo](https://github.com/janodev/LoadingView/blob/main/Demo/Sources/SwiftUI/Demos/RetryDemo/RetryDemo.swift): automatic retry functionality with configurable attempts for handling transient failures.
+- [BasicLoadingDemo](https://github.com/janodevorg/LoadingView/blob/main/Demo/Sources/SwiftUI/Demos/BasicLoadingDemo/BasicLoadingDemo.swift): default behavior.
+- [CancellationDemo](https://github.com/janodevorg/LoadingView/blob/main/Demo/Sources/SwiftUI/Demos/CancellationDemo/CancellationDemo.swift): cancelling a loading task.
+- [ConcurrencyLimitingDemo](https://github.com/janodevorg/LoadingView/blob/main/Demo/Sources/SwiftUI/Demos/ConcurrencyLimitingDemo/ConcurrencyLimitingDemo.swift): executing n operations with a concurrency limit.
+- [CustomViewsDemo](https://github.com/janodevorg/LoadingView/blob/main/Demo/Sources/SwiftUI/Demos/CustomViewsDemo/CustomViewsDemo.swift): providing custom views for empty, loading, success, and failure state.
+- [DebouncedDemo](https://github.com/janodevorg/LoadingView/blob/main/Demo/Sources/SwiftUI/Demos/DebouncedDemo/DebouncedDemo.swift): executing an operation when a certain time elapses since a given event.
+- [ErrorScenariosDemo](https://github.com/janodevorg/LoadingView/blob/main/Demo/Sources/SwiftUI/Demos/ErrorScenariosDemo/ErrorScenariosDemo.swift): different error types and custom error handling views with retry capabilities.
+- [ManualLoadingDemo](https://github.com/janodevorg/LoadingView/blob/main/Demo/Sources/SwiftUI/Demos/ManualLoadingDemo/ManualLoadingDemo.swift): compares automatic loading on appear versus manual loading triggered by user action.
+- [MultipleLoadersDemo](https://github.com/janodevorg/LoadingView/blob/main/Demo/Sources/SwiftUI/Demos/MultipleLoadersDemo/MultipleLoadersDemo.swift): demonstrates managing multiple independent loaders within a single view.
+- [ProgressTrackingDemo](https://github.com/janodevorg/LoadingView/blob/main/Demo/Sources/SwiftUI/Demos/ProgressTrackingDemo/ProgressTrackingDemo.swift): shows real-time progress updates during long-running operations.
+- [RetryDemo](https://github.com/janodevorg/LoadingView/blob/main/Demo/Sources/SwiftUI/Demos/RetryDemo/RetryDemo.swift): automatic retry functionality with configurable attempts for handling transient failures.
+
+See them in action in the Demo application.
 
 ### Retry on Failure
 

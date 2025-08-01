@@ -165,10 +165,10 @@ public struct LoadingView<L: Loadable & Sendable, Content: View>: View {
                     log.debug("Rendering progress even though progress is nil because there is a custom progress view")
                     loadingState = state
                 } else if case .failure(let hashableError) = state {
-                    log.debug("Changing state to failure: \(errorDetails(hashableError.error))")
+                    log.debug("LoadingView state failure: \(errorDetails(hashableError.error))")
                     loadingState = state
                 } else {
-                    log.debug("Changing state to: \(String(describing: state))")
+                    log.debug("LoadingView: \(String(describing: state))")
                     loadingState = state
                 }
                 if case .loading(let progress) = state, progress?.isCanceled == true {
@@ -205,14 +205,14 @@ public struct LoadingView<L: Loadable & Sendable, Content: View>: View {
     private func load() async {
         switch loadingState {
         case .idle, .failure:
-            log.debug("Called loader.load()")
+            log.debug("LoadingView: load()")
             loader.reset()
             await loader.load()
         case .loaded:
             // Don't reset if already loaded - this preserves data when navigating back
-            log.debug("Called loader.load() but already loaded, skipping reset")
+            log.debug("LoadingView called load() but already loaded, skipping reset")
         default:
-            log.debug("Called loader.load() but state is \(self.loadingState) so ignored")
+            log.debug("LoadingView called load() but state is \(self.loadingState) so ignored")
         }
     }
 

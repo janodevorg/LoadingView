@@ -13,17 +13,13 @@ let package = Package(
             targets: ["LoadingView"])
     ],
     dependencies: [
-        .package(url: "git@github.com:SimplyDanny/SwiftLintPlugins.git", from: "0.58.2"),
     ],
     targets: [
         .target(
             name: "LoadingView",
             dependencies: [
             ],
-            path: "Sources/Main",
-            plugins: [
-                .plugin(name: "SwiftLintBuildToolPlugin", package: "SwiftLintPlugins")
-            ]
+            path: "Sources/Main"
         ),
         .testTarget(
             name: "LoadingViewTests",

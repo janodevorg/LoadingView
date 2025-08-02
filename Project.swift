@@ -46,7 +46,7 @@ let project = Project(
                targets: [TargetReference.target("LoadingView")]
            ),
            testAction: .testPlans(
-               [Path.path("Sources/Tests/LoadingView.xctestplan")],
+               [Path.path("LoadingView.xctestplan")],
                configuration: .debug,
                attachDebugger: true
            )

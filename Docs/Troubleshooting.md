@@ -135,6 +135,64 @@ loader.reset()
 await loader.load()
 ```
 
+### 6. Multiple Windows Opening on macOS
+
+**Symptom**: Multiple LoadingView windows open on app launch (e.g., 4 identical windows)
+```
+LoadingView: load()
+Dependencies loading
+Initializing database...
+// Repeated 4 times
+```
+
+**Cause**: Using `@State` with an `@Observable` loader in the `App` struct can cause unexpected behavior during app initialization. While `@State` + `@Observable` works fine in regular Views, the `App` struct has different lifecycle semantics that can trigger multiple window creations.
+
+**Solution**: Use plain `let` for `@Observable` objects in your `App` struct
+```swift
+// ❌ PROBLEMATIC: @State in App struct with immediate initialization
+@main
+struct MyApp: App {
+    @State private var loadable = MyLoadable()  // Can cause issues in App struct
+    
+    var body: some Scene {
+        WindowGroup {
+            LoadingView(loader: loadable) { /* ... */ }
+        }
+    }
+}
+
+// ✅ CORRECT: Plain property in App struct
+@main  
+struct MyApp: App {
+    private let loadable = MyLoadable()  // Clear single instance
+    
+    var body: some Scene {
+        WindowGroup {
+            LoadingView(loader: loadable) { /* ... */ }
+        }
+    }
+}
+```
+
+**Why this happens**:
+- The `App` struct's body may be evaluated multiple times during startup
+- `WindowGroup` with `@State` initialization can confuse SwiftUI's scene management
+- This is specific to the `App` struct - `@State` + `@Observable` works fine in regular Views
+
+**Additional Considerations**:
+- macOS may also restore multiple windows from previous sessions. Add an AppDelegate to disable restoration:
+```swift
+@NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+
+final class AppDelegate: NSObject, NSApplicationDelegate {
+    func applicationShouldRestoreApplicationState(_ app: NSApplication, coder: NSCoder) -> Bool {
+        false  // Disable window restoration
+    }
+}
+```
+
+**Note**: This issue is specific to the `App` struct context. Using `@State` with `@Observable` objects in regular Views is generally fine and follows normal SwiftUI patterns.
+
 ## Patterns & Anti-Patterns
 
 ### AsyncStream Usage

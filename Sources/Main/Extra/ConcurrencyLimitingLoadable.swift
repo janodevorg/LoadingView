@@ -139,7 +139,7 @@ actor TokenBucket {
     /// Executes the given work with a token, suspending if none are available.
     /// - Parameter work: The async work to execute once a token is acquired
     /// - Throws: If the task is cancelled while waiting for a token
-    func withToken<R>(_ work: @Sendable () async throws -> R) async throws -> R {
+    func withToken<R: Sendable>(_ work: @Sendable () async throws -> R) async throws -> R {
         // Wait for a token if none available
         if availableTokens == 0 {
             try await waitForToken()

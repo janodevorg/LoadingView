@@ -203,16 +203,18 @@ public struct LoadingView<L: Loadable & Sendable, Content: View>: View {
      in an active loading state.
      */
     private func load() async {
-        switch loadingState {
+        // Guard using the loader's shared state to avoid duplicate loads
+        let loaderState = loader.currentState
+        switch loaderState {
         case .idle, .failure:
             log.debug("LoadingView: load()")
             loader.reset()
             await loader.load()
         case .loaded:
             // Don't reset if already loaded - this preserves data when navigating back
-            log.debug("LoadingView called load() but already loaded, skipping reset")
-        default:
-            log.debug("LoadingView called load() but state is \(self.loadingState) so ignored")
+            log.debug("LoadingView called load() but loader is already loaded, skipping reset")
+        case .loading:
+            log.debug("LoadingView called load() but loader is already loading, skipping")
         }
     }
 

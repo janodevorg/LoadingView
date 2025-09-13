@@ -159,6 +159,11 @@ public struct LoadingView<L: Loadable & Sendable, Content: View>: View {
         }
         .task {
             for await state in loader.state {
+                // Avoid redundant assignments that can retrigger view evaluation
+                if state == loadingState {
+                    continue
+                }
+
                 if case .loading(nil) = state, skipsEmittingLoadingWhenProgressIsNil {
                     log.debug("Skipping rendering progress because progress is nil")
                 } else if case .loading(nil) = state, !skipsEmittingLoadingWhenProgressIsNil {

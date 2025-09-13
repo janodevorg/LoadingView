@@ -69,7 +69,6 @@ open class BaseLoadable<Value: Hashable & Sendable>: Loadable {
             guard !isCanceled else {
                 return // client cancelled, result no longer needed
             }
-            log.debug("LoadingView: \(String(describing: value))")
             stateRelay.update(.loaded(value))
         } catch {
             guard !isCanceled else {

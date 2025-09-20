@@ -51,3 +51,15 @@ public protocol Loadable {
     /// or a `.failure(error)` on failure.
     func load() async
 }
+
+// Convenience API for callers that want to avoid triggering a new load
+// while one is already in progress, without changing the semantics of
+// `load()` which always attempts a fetch.
+public extension Loadable {
+    /// Calls `load()` only if `currentState` is not `.loading`.
+    /// Useful for view-layer actions like `.onAppear` or `.refreshable`.
+    func loadIfNotLoading() async {
+        if case .loading = currentState { return }
+        await load()
+    }
+}

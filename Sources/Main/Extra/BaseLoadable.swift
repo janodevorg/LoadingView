@@ -47,17 +47,7 @@ open class BaseLoadable<Value: Hashable & Sendable>: Loadable {
             return
         }
 
-        // Prevent re-entrant loads when already loading or loaded
-        switch currentState {
-        case .loading:
-            log.debug("Skipping load. currentState is already .loading")
-            return
-        case .loaded:
-            log.debug("Skipping load. currentState is already .loaded")
-            return
-        default:
-            break
-        }
+        // Allow repeated loads; wrappers control concurrency.
 
         // Loading at 0% progress.
         // Passing progress info is optional, you may also pass .loading(nil)

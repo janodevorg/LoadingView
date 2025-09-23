@@ -6,9 +6,9 @@ nonisolated(unsafe) let project = Project(
         .package(path: "..")
     ],
     settings: .settings(base: [
-        "SWIFT_VERSION": "6.0",
-        "IPHONEOS_DEPLOYMENT_TARGET": "18.0",
-        "MACOSX_DEPLOYMENT_TARGET": "15.0"
+        "SWIFT_VERSION": "6.2",
+        "IPHONEOS_DEPLOYMENT_TARGET": "26.0",
+        "MACOSX_DEPLOYMENT_TARGET": "26.0"
     ]),
     targets: [
         .target(
@@ -39,6 +39,7 @@ nonisolated(unsafe) let project = Project(
                 ]
             )
         ),
+
         .target(
             name: "Demo-MacOS",
             destinations: .macOS,

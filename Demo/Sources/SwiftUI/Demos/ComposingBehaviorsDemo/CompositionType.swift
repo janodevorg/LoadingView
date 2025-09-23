@@ -2,10 +2,10 @@ import Foundation
 
 /// Defines the available composition patterns for combining different Loadable behaviors.
 enum CompositionType: String, CaseIterable {
-    case retryWithDebounce = "Retry + Debounce"
-    case concurrencyWithRetry = "Concurrency + Retry"
+    case retryWithDebounce = "Debounce + Retry"
+    case concurrencyWithRetry = "Retry + Concurrency"
     case fullStack = "Full Stack (All 3)"
-    case debounceWithConcurrency = "Debounce + Concurrency"
+    case debounceWithConcurrency = "Concurrency + Debounce"
 
     var description: String {
         switch self {
@@ -39,6 +39,19 @@ enum CompositionType: String, CaseIterable {
             return ["Base Loader", "DebouncingLoadable", "RetryableLoader", "ConcurrencyLimitingLoadable"]
         case .debounceWithConcurrency:
             return ["Base Loader", "ConcurrencyLimitingLoadable", "DebouncingLoadable"]
+        }
+    }
+
+    var icon: String {
+        switch self {
+        case .retryWithDebounce:
+            return "arrow.clockwise.circle"
+        case .concurrencyWithRetry:
+            return "square.3.layers.3d"
+        case .fullStack:
+            return "square.stack.3d.up"
+        case .debounceWithConcurrency:
+            return "timer"
         }
     }
 }

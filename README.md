@@ -75,7 +75,7 @@ Using Xcode Swift Package Manager:
 
 ### Using SPM
 ```swift
-.package(url: "git@github.com:janodevorg/LoadingView.git", from: "1.0.0"),
+.package(url: "git@github.com:janodevorg/LoadingView.git", from: "1.0.3"),
 
 .product(name: "LoadingView", package: "LoadingView"),
 ```

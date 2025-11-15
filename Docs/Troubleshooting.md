@@ -135,7 +135,78 @@ loader.reset()
 await loader.load()
 ```
 
-### 6. Multiple Windows Opening on macOS
+### 6. Body Not Rendering - Loader Reassignment in .task
+
+**Symptom**: LoadingView shows empty/idle state and never displays loaded content, even though data loads successfully
+
+**Cause**: Reassigning the loader variable inside `.task` creates a new `BlockLoadable` instance, but LoadingView continues observing the old instance that was passed during initialization.
+
+**Solution**: Create a custom `BaseLoadable` subclass that maintains the same instance
+
+```swift
+// ❌ ANTI-PATTERN: Reassigning loader in .task
+@State private var loader = BlockLoadable<Bool> { true }
+
+var body: some View {
+    LoadingView(loader: loader) { value in
+        Text("Success")
+    }
+    .task {
+        // This creates a NEW instance - LoadingView still observes the OLD one
+        loader = BlockLoadable {
+            await doWork()
+            return true
+        }
+        await loader.load()
+    }
+}
+
+// ✅ PATTERN: Use a custom loader that maintains instance identity
+@MainActor
+final class DataLoader: BaseLoadable<Bool> {
+    private weak var viewModel: ViewModel?
+
+    init(viewModel: ViewModel) {
+        self.viewModel = viewModel
+        super.init()
+    }
+
+    override func fetch() async throws -> Bool {
+        guard let viewModel else {
+            throw LoaderError.viewModelDeallocated
+        }
+        await viewModel.loadData()
+        return true
+    }
+}
+
+// In your view:
+@State private var viewModel = ViewModel()
+@State private var loader: DataLoader
+
+init() {
+    let vm = ViewModel()
+    self._viewModel = State(initialValue: vm)
+    self._loader = State(initialValue: DataLoader(viewModel: vm))
+}
+
+var body: some View {
+    LoadingView(loader: loader) { value in
+        Text("Success")
+    }
+    .task {
+        await loader.load()  // No reassignment needed
+    }
+}
+```
+
+**Key Points**:
+- LoadingView captures the loader reference during initialization
+- Reassigning the `@State` variable doesn't update LoadingView's internal reference
+- Use dependency injection to configure loaders, not reassignment
+- This is the same underlying issue as #5, but occurs during initialization
+
+### 7. Multiple Windows Opening on macOS
 
 **Symptom**: Multiple LoadingView windows open on app launch (e.g., 4 identical windows)
 ```
@@ -230,6 +301,36 @@ loader = BlockLoadable { /* new logic */ }  // SwiftUI might not detect change
 loader.configuration = newValue
 loader.reset()
 await loader.load()
+```
+
+### Loader Initialization and Reassignment
+
+```swift
+// ❌ ANTI-PATTERN: Reassigning in .task block
+@State private var loader = BlockLoadable<Bool> { true }
+
+var body: some View {
+    LoadingView(loader: loader) { ... }
+        .task {
+            loader = BlockLoadable { /* work */ }  // LoadingView still observes old instance!
+            await loader.load()
+        }
+}
+
+// ✅ PATTERN: Use custom loader with dependency injection
+@State private var loader: CustomLoader
+
+init() {
+    let loader = CustomLoader(dependencies: ...)
+    self._loader = State(initialValue: loader)
+}
+
+var body: some View {
+    LoadingView(loader: loader) { ... }
+        .task {
+            await loader.load()  // No reassignment needed
+        }
+}
 ```
 
 ### Cancellation Handling
@@ -345,6 +446,7 @@ override func updateState(_ state: LoadingState<Value>) {
 | Wrong retry count | Not resetting internal state | Reset monitoring task |
 | State not updating | Creating new instances | Update existing instance |
 | Debounce count wrong | onChange during reset | Use isResetting flag |
+| Body not rendering | Reassigning loader in .task | Use custom BaseLoadable subclass |
 
 ## Getting Help
 

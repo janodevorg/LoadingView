@@ -169,3 +169,6 @@ There are some docs in the [`Docs/`](./Docs) folder.
 - **[DesignDecisions.md](./Docs/DesignDecisions.md)**: how the library changed to overcome several pitfalls.
 - **[StateRelay.md](./Docs/StateRelay.md)**: Understand the core component that enables robust state management.
 - **[Troubleshooting.md](./Docs/Troubleshooting.md)**: Find solutions to common problems and learn about best practices.
+- **[AgentGuide.md](./Docs/AgentGuide.md)**: Complete technical reference optimized for AI agents.
+
+**Tip for AI-assisted development**: If you encounter an issue while using this package with an AI coding agent, provide it with the relevant documentation files above. The docs contain detailed troubleshooting patterns and anti-patterns that help agents quickly identify and fix common problems.

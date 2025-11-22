@@ -36,7 +36,7 @@ class FlakeyLoader: BaseLoadable<String> {
         }
 
         let message = "Finally connected after \(totalAttemptCount) attempts!"
-        print("  - ✅ Success: \(message)")
+        print("  - Success: \(message)")
         return message
     }
 }

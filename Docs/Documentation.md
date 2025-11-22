@@ -71,7 +71,7 @@ BlockLoadable<String> {
 
 Abstract class for custom loaders:
 - Override `fetch() async throws -> Value`
-- Handles state management via StateRelay
+- Feeds state changes through Swift's Observation AsyncSequence
 - Supports cancellation
 - Provides `currentState: LoadingState<Value>` for synchronous access
 - Provides `updateState(_:)` for custom state updates
@@ -100,7 +100,7 @@ RetryableLoader(
 )
 ```
 
-Uses StateRelay for state management and provides exponential backoff between retry attempts.
+Publishes state via the Observation framework and provides exponential backoff between retry attempts.
 
 ### ConcurrencyLimitingLoadable
 
@@ -116,7 +116,7 @@ Features:
 - Suspends tasks when limit reached (doesn't block threads)
 - Maintains order of requests (FIFO queue)
 - Integrates with Swift's priority system
-- Uses StateRelay for state management
+- Uses the Observation-backed state stream
 
 Useful for:
 - Rate limiting API calls
@@ -178,7 +178,7 @@ Custom view for `.failure` state:
 - Multiple `load()` calls ignored during active loading
 - `reset()` updates state to `.idle`
 - Cancellation triggered when `progress.isCanceled == true`
-- State persists across view navigation via StateRelay
+- State stays in sync across navigation because the Observation stream replays the latest value to new observers
 
 ## Usage Patterns
 
@@ -287,33 +287,32 @@ LoadingView(loader: limitedLoader) { images in
 
 ## Implementation Details
 
-### State Management (StateRelay)
+### State Management (Swift Observations)
 
-- BaseLoadable uses StateRelay instead of raw AsyncStream
-- StateRelay maintains current state and broadcasts to multiple observers
-- New observers immediately receive current state (prevents empty views)
-- LoadingView syncs with loader's current state on `.onAppear`
+- BaseLoadable, RetryableLoader, and ConcurrencyLimitingLoadable expose state via the Observation framework
+- Observation-backed AsyncSequences support multiple observers and replay the latest value when a new observer subscribes
+- LoadingView syncs with the loader's current state on `.onAppear` as an extra safety net
 
 ### AsyncStream Management
 
-- StateRelay wraps AsyncStream with replay functionality
+- DebouncingLoadable still uses `AsyncStream` internally with a single continuation
 - LoadingView subscribes via `.task` modifier
 - State updates trigger SwiftUI redraws
-- Supports multiple concurrent observers
+- Supports multiple concurrent observers when using Observation-backed loaders
 
 ### Memory Management
 
 - Use `[weak self]` in async contexts
 - Cancel operations on view disappear if needed
-- StateRelay handles continuation cleanup
-- No stream exhaustion issues
+- Observation handles continuation cleanup automatically for the standard loaders
+- No stream exhaustion issues with Observation-backed loaders
 
 ### Thread Safety
 
 - All UI updates on `@MainActor`
 - Loadable implementations must be `Sendable`
 - State transitions are sequential
-- StateRelay is `@MainActor` isolated
+- Observation streams are `@MainActor` isolated in this package
 
 ### Navigation Resilience
 

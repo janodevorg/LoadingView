@@ -14,24 +14,24 @@ This guide covers common issues encountered when using LoadingView and their sol
 
 **Symptom**: Logs show success state reached but UI doesn't update
 ```
-📊 State: SUCCESS - Finally connected after 3 attempts!
+State: SUCCESS - Finally connected after 3 attempts!
 // But no success view renders
 ```
 
 **Cause**: Multiple observers competing for values from a single AsyncStream. AsyncStream is single-consumer - each value goes to only ONE observer.
 
-**Solution**: Use StateRelay for multi-observer scenarios
+**Solution**: Publish state via Swift's Observation framework instead of a raw AsyncStream when you need multiple observers.
 ```swift
-// ❌ WRONG: AsyncStream with multiple observers
+// WRONG: AsyncStream with multiple observers
 private let continuation: AsyncStream<LoadingState<Value>>.Continuation
 public private(set) var state: any AsyncSequence<LoadingState<Value>, Never>
 
-// ✅ CORRECT: StateRelay for multiple observers
-private let stateRelay = StateRelay<LoadingState<Value>>(.idle)
+// CORRECT: Observation-backed stream that replays the latest value
 public var state: any AsyncSequence<LoadingState<Value>, Never> {
-    stateRelay.stream
+    Observations { self.currentState }
 }
 ```
+*Note*: DebouncingLoadable still uses AsyncStream internally; keep only one consumer or wrap it in a BaseLoadable if you need broadcast-style observation.
 
 ### 2. Infinite Cancel Loops
 
@@ -49,7 +49,7 @@ Changing state to: .loading percent: , message: Cancelled
 **Solution**: Guard against redundant cancellation
 ```swift
 override func cancel() {
-    // ✅ Prevent infinite loop
+    // Prevent infinite loop
     guard !isCanceled else { return }
     
     super.cancel()
@@ -75,9 +75,9 @@ override func cancel() {
 public func reset() {
     isCanceled = false
     base.reset()
-    stateRelay.update(.idle)
+    currentState = .idle
     
-    // ✅ Reset monitoring task to start fresh
+    // Reset monitoring task to start fresh
     monitorTask?.cancel()
     monitorTask = nil
     hasStartedMonitoring = false
@@ -119,7 +119,7 @@ onReset: {
 
 **Solution**: Use a configurable loader that maintains the same instance
 ```swift
-// ✅ Single configurable instance
+// Single configurable instance
 @MainActor
 class ConfigurableErrorLoader: BaseLoadable<String> {
     var errorToThrow: Error = DemoError.networkError
@@ -144,7 +144,7 @@ await loader.load()
 **Solution**: Create a custom `BaseLoadable` subclass that maintains the same instance
 
 ```swift
-// ❌ ANTI-PATTERN: Reassigning loader in .task
+// ANTI-PATTERN: Reassigning loader in .task
 @State private var loader = BlockLoadable<Bool> { true }
 
 var body: some View {
@@ -161,7 +161,7 @@ var body: some View {
     }
 }
 
-// ✅ PATTERN: Use a custom loader that maintains instance identity
+// PATTERN: Use a custom loader that maintains instance identity
 @MainActor
 final class DataLoader: BaseLoadable<Bool> {
     private weak var viewModel: ViewModel?
@@ -220,7 +220,7 @@ Initializing database...
 
 **Solution**: Use plain `let` for `@Observable` objects in your `App` struct
 ```swift
-// ❌ PROBLEMATIC: @State in App struct with immediate initialization
+// PROBLEMATIC: @State in App struct with immediate initialization
 @main
 struct MyApp: App {
     @State private var loadable = MyLoadable()  // Can cause issues in App struct
@@ -232,7 +232,7 @@ struct MyApp: App {
     }
 }
 
-// ✅ CORRECT: Plain property in App struct
+// CORRECT: Plain property in App struct
 @main  
 struct MyApp: App {
     private let loadable = MyLoadable()  // Clear single instance
@@ -269,23 +269,25 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 ### AsyncStream Usage
 
 ```swift
-// ❌ ANTI-PATTERN: Sharing AsyncStream between multiple consumers
+// ANTI-PATTERN: Sharing AsyncStream between multiple consumers
 .task { for await state in loader.state { /* UI updates */ } }
 .task { for await state in loader.state { /* Logging */ } }  // Steals states!
 
-// ✅ PATTERN: Use StateRelay for multiple observers
-// Each observer gets its own stream with current value replay
+// PATTERN: Use Observation-backed state streams so each observer sees the same values
+public var state: any AsyncSequence<LoadingState<Value>, Never> {
+    Observations { self.currentState }
+}
 ```
 
 ### Loader Lifecycle Management
 
 ```swift
-// ❌ ANTI-PATTERN: Reset base loader during retries
+// ANTI-PATTERN: Reset base loader during retries
 case .failure(_) where attemptCount < maxAttempts:
     base.reset()  // Resets internal state like attempt counters!
     await base.load()
 
-// ✅ PATTERN: Only reset when starting fresh
+// PATTERN: Only reset when starting fresh
 case .failure(_) where attemptCount < maxAttempts:
     // Don't reset - just retry
     await base.load()
@@ -294,10 +296,10 @@ case .failure(_) where attemptCount < maxAttempts:
 ### State Updates in Loaders
 
 ```swift
-// ❌ ANTI-PATTERN: Creating new instances to trigger updates
+// ANTI-PATTERN: Creating new instances to trigger updates
 loader = BlockLoadable { /* new logic */ }  // SwiftUI might not detect change
 
-// ✅ PATTERN: Update existing instance state
+// PATTERN: Update existing instance state
 loader.configuration = newValue
 loader.reset()
 await loader.load()
@@ -306,7 +308,7 @@ await loader.load()
 ### Loader Initialization and Reassignment
 
 ```swift
-// ❌ ANTI-PATTERN: Reassigning in .task block
+// ANTI-PATTERN: Reassigning in .task block
 @State private var loader = BlockLoadable<Bool> { true }
 
 var body: some View {
@@ -317,7 +319,7 @@ var body: some View {
         }
 }
 
-// ✅ PATTERN: Use custom loader with dependency injection
+// PATTERN: Use custom loader with dependency injection
 @State private var loader: CustomLoader
 
 init() {
@@ -336,10 +338,10 @@ var body: some View {
 ### Cancellation Handling
 
 ```swift
-// ❌ ANTI-PATTERN: Simple property override
+// ANTI-PATTERN: Simple property override
 open var isCanceled = false  // Can't override stored properties
 
-// ✅ PATTERN: Make methods overridable
+// PATTERN: Make methods overridable
 open func cancel() {
     isCanceled = true
 }
@@ -413,10 +415,10 @@ onRetry: {
 
 ### 5. Multi-Observer Scenarios
 If you need multiple parts of your app to observe the same loader:
-1. Use StateRelay (built into BaseLoadable)
-2. Each observer gets its own stream
-3. New observers receive current state immediately
-4. All observers receive all updates
+1. Prefer the Observation-backed loaders (BaseLoadable, RetryableLoader, ConcurrencyLimitingLoadable)
+2. Each observer gets the latest state immediately
+3. Observation manages replay and lifecycle for you
+4. If you need multi-observer support for an AsyncStream-based loader (like DebouncingLoadable), wrap it in a BaseLoadable facade
 
 ## Debug Tips
 
@@ -441,7 +443,7 @@ override func updateState(_ state: LoadingState<Value>) {
 
 | Issue | Likely Cause | Quick Fix |
 |-------|-------------|-----------|
-| Success not showing | Multiple AsyncStream observers | Use StateRelay |
+| Success not showing | Multiple AsyncStream observers | Use Observation-backed loaders |
 | Infinite cancel loop | cancel() updating isCanceled state | Add guard in cancel() |
 | Wrong retry count | Not resetting internal state | Reset monitoring task |
 | State not updating | Creating new instances | Update existing instance |

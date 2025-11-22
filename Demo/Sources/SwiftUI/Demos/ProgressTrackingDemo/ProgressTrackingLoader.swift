@@ -51,11 +51,11 @@ class ProgressTrackingLoader: BaseLoadable<[String]> {
             try await Task.sleep(nanoseconds: 200_000_000)
 
             let results = [
-                "✅ Connection established",
-                "✅ Authentication successful",
-                "✅ Data retrieved (2.5MB)",
-                "✅ Processing completed",
-                "✅ 42 items loaded"
+                "Connection established",
+                "Authentication successful",
+                "Data retrieved (2.5MB)",
+                "Processing completed",
+                "42 items loaded"
             ]
 
             updateState(.loaded(results))

@@ -91,7 +91,7 @@ class CustomLoader: BaseLoadable<Data> {
 
 Features:
 - `@Observable` for SwiftUI integration
-- StateRelay for state management
+- Observation-backed state stream for multiple observers
 - `currentState` for synchronous access
 - `updateState(_:)` for progress updates
 
@@ -236,10 +236,10 @@ let final = ConcurrencyLimitingLoadable(
 - State persists across navigation
 
 ### State Management
-- Uses StateRelay for broadcast to multiple observers
-- New observers receive current state immediately
+- Uses Swift Observation to broadcast to multiple observers
+- New observers immediately see the latest state
 - Thread-safe with `@MainActor` isolation
-- No stream exhaustion issues
+- No stream exhaustion issues for Observation-backed loaders
 
 ### Error Handling
 - Errors wrapped in `HashableError` for `Hashable` conformance
@@ -318,7 +318,7 @@ VStack {
 
 ### Empty View After Navigation
 - LoadingView syncs with `currentState` on appear
-- State persists via StateRelay
+- Observation-backed streams replay the latest state to new observers
 - No need to reload after navigation
 
 ### Progress Not Showing

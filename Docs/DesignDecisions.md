@@ -53,21 +53,14 @@ self.continuation?.onTermination = { @Sendable _ in
 }
 ```
 
-**Solution in BaseLoadable/RetryableLoader** (uses StateRelay):
-StateRelay handles continuation lifecycle internally:
-```swift
-deinit {
-    for continuation in continuations.values {
-        continuation.finish()
-    }
-}
-```
+**Solution in BaseLoadable/RetryableLoader** (Observation-backed):
+The Observation framework powers the state AsyncSequence for BaseLoadable, RetryableLoader, and ConcurrencyLimitingLoadable, so there are no manual continuations to finish in those types. For AsyncStream-based helpers (like DebouncingLoadable), keep finishing the continuation in `deinit` as shown above.
 
 **Key Points**:
 - Always finish continuations in deinit
 - Use weak self in termination handlers to avoid retain cycles
 - Guard against nil self to prevent crashes
-- StateRelay encapsulates this complexity
+- Observation removes manual continuation management for the core loaders
 
 ## 3. Thread Safety with @MainActor
 
@@ -136,7 +129,7 @@ public init(block: @Sendable @escaping () async throws -> T,
 **Key Points**:
 - Set all stored properties before calling super.init()
 - This ensures the object is fully initialized before parent class code runs
-- BaseLoadable now uses StateRelay which is initialized inline, simplifying initialization
+- BaseLoadable now uses Swift Observations for state streaming, so there's no extra relay object to wire up
 
 ## 6. Input Validation
 
@@ -220,62 +213,18 @@ public func cancel() {
 - Start observation before triggering any state changes
 - Use weak self in closures to prevent retain cycles while avoiding crashes
 
-## 11. State Persistence Across Navigation (StateRelay Pattern)
+## 11. State Persistence Across Navigation (Observation Streams)
 
-**Problem**: AsyncStream is an event pipe, not a state holder. When views navigate away and return, they lose their state because:
+**Problem**: AsyncStream is an event pipe, not a state holder. When views navigate away and return, they can lose state because:
 - The `.task` modifier cancels on disappear
 - AsyncStream doesn't replay values to new observers
 - LoadingView's local `@State` resets to `.idle`
 
-**Solution with StateRelay**:
+**Solution with Observation**:
 ```swift
-@MainActor
-final class StateRelay<Value: Sendable>: Sendable {
-    private var continuations: [UUID: AsyncStream<Value>.Continuation] = [:]
-    private(set) var currentValue: Value
-    
-    var stream: AsyncStream<Value> {
-        AsyncStream { continuation in
-            let id = UUID()
-            continuations[id] = continuation
-            
-            // Immediately replay current value to new observer
-            continuation.yield(currentValue)
-            
-            continuation.onTermination = { @Sendable [weak self] _ in
-                Task { @MainActor in
-                    self?.continuations[id] = nil
-                }
-            }
-        }
-    }
-    
-    func update(_ newValue: Value) {
-        currentValue = newValue
-        for continuation in continuations.values {
-            continuation.yield(newValue)
-        }
-    }
-}
-```
-
-**Integration in BaseLoadable and RetryableLoader**:
-```swift
-// BaseLoadable: State relay that maintains current state and supports multiple observers
-@ObservationIgnored private let stateRelay = StateRelay<LoadingState<Value>>(.idle)
-
-/// The current loading state - can be read synchronously
-public var currentState: LoadingState<Value> {
-    stateRelay.currentValue
-}
-
-/// An async sequence of state changes - replays current value to new observers
 public var state: any AsyncSequence<LoadingState<Value>, Never> {
-    stateRelay.stream
+    Observations { self.currentState }
 }
-
-// RetryableLoader also uses StateRelay:
-private let stateRelay = StateRelay<LoadingState<Value>>(.idle)
 ```
 
 **LoadingView State Synchronization**:
@@ -290,12 +239,10 @@ private let stateRelay = StateRelay<LoadingState<Value>>(.idle)
 ```
 
 **Key Points**:
-- StateRelay replaces AsyncStream for state management in BaseLoadable and RetryableLoader
-- DebouncingLoadable still uses traditional AsyncStream with continuation
-- New observers immediately receive the current value
-- Supports multiple concurrent observers
+- Observation-backed AsyncSequences support multiple observers and replay the latest value
+- DebouncingLoadable still uses traditional AsyncStream with a single continuation
 - State persists across view lifecycle
-- Synchronous `currentState` property for immediate reads
+- Synchronous `currentState` property provides immediate reads
 - Prevents the "empty view after navigation" bug
 
 ## 12. Protocol-Oriented State Synchronization

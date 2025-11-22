@@ -167,7 +167,6 @@ There are some docs in the [`Docs/`](./Docs) folder.
 
 - **[Documentation.md](./Docs/Documentation.md)**: API reference and usage guide.
 - **[DesignDecisions.md](./Docs/DesignDecisions.md)**: how the library changed to overcome several pitfalls.
-- **[StateRelay.md](./Docs/StateRelay.md)**: Understand the core component that enables robust state management.
 - **[Troubleshooting.md](./Docs/Troubleshooting.md)**: Find solutions to common problems and learn about best practices.
 - **[AgentGuide.md](./Docs/AgentGuide.md)**: Complete technical reference optimized for AI agents.
 
